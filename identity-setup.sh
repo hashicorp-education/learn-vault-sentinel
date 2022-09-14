@@ -8,10 +8,6 @@ vault policy write admin -<<EOF
 path "auth/*" {
    capabilities = [ "create", "read", "update", "delete", "list", "sudo" ]
 }
-
-path "secret/*" {
-   capabilities = [ "create", "read", "update", "delete" ]
-}
 EOF
 
 vault policy write sysops -<<EOF
