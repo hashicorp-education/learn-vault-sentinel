@@ -51,7 +51,7 @@ precond = rule {
 
 main = rule when precond {
     identity.entity.metadata.role is "Team Lead" or 
-  		identity.entity.id is "$(cat entity_id_james.txt)"
+  		identity.entity.name is "James Thomas"
 }
 EOF
 
