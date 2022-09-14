@@ -1,3 +1,9 @@
+vault policy write secrets -<<EOF
+path "secret/*" {
+   capabilities = [ "create", "read", "update", "delete" ]
+}
+EOF
+
 vault policy write admin -<<EOF
 path "auth/*" {
    capabilities = [ "create", "read", "update", "delete", "list", "sudo" ]
@@ -17,8 +23,8 @@ EOF
 
 vault auth enable -path="userpass-test" userpass
 
-vault write auth/userpass-test/users/james password="training" policies="test"
-vault write auth/userpass-test/users/bob password="training" policies="test"
+vault write auth/userpass-test/users/james password="training" policies="secrets"
+vault write auth/userpass-test/users/bob password="training" policies="secrets"
 
 vault auth list -format=json | jq -r '.["userpass-test/"].accessor' > accessor_test.txt
 
@@ -53,7 +59,7 @@ main = rule when precond {
 }
 EOF
 
-# Create 'sysops' group with RGP attached
+# Create 'sysops' group 
 vault write identity/group name="sysops" \
      policies="sysops, test-rgp" \
      member_entity_ids="$(cat entity_id_james.txt), $(cat entity_id_bob.txt)"
