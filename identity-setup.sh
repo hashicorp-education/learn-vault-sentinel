@@ -34,6 +34,7 @@ vault write identity/entity-alias name="james" \
 
 # Create Bob Smith entity
 vault write -format=json identity/entity name="Bob Smith" policies="admin" \
+	  metadata=role="Kubernetes Expert" \
      | jq -r ".data.id" > entity_id_bob.txt
 
 vault write identity/entity-alias name="bob" \
