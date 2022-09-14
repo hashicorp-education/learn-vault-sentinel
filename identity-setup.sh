@@ -16,11 +16,10 @@ path "sys/*" {
 }
 EOF
 
-
+# Create users under userpass auth
 vault auth enable -path="userpass-test" userpass
-
-vault write auth/userpass-test/users/james password="training" policies="secrets"
-vault write auth/userpass-test/users/bob password="training" policies="secrets"
+vault write auth/userpass-test/users/james password="training" policies="test"
+vault write auth/userpass-test/users/bob password="training" policies="test"
 
 vault auth list -format=json | jq -r '.["userpass-test/"].accessor' > accessor_test.txt
 
@@ -55,7 +54,8 @@ main = rule when precond {
 }
 EOF
 
-# Create 'sysops' group 
-vault write identity/group name="sysops" \
+# Create 'sysops' group with RGP attached
+vault write -format=json identity/group name="sysops" \
      policies="sysops, test-rgp" \
-     member_entity_ids="$(cat entity_id_james.txt), $(cat entity_id_bob.txt)"
+     member_entity_ids="$(cat entity_id_james.txt), $(cat entity_id_bob.txt)" \
+     | jq -r ".data.id" > group_id_sysops.txt
