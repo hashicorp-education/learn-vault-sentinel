@@ -20,10 +20,9 @@ EOF
 vault auth enable -path="userpass-test" userpass
 vault write auth/userpass-test/users/james password="training" policies="test"
 vault write auth/userpass-test/users/bob password="training" policies="test"
-
 vault auth list -format=json | jq -r '.["userpass-test/"].accessor' > accessor_test.txt
 
-# Create 'Team Lead' entity
+# Create 'James Thomas' entity
 vault write -format=json identity/entity name="James Thomas" policies="admin" \
      metadata=role="Team Lead" \
      | jq -r ".data.id" > entity_id_james.txt
