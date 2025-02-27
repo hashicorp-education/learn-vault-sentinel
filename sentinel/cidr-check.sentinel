@@ -9,7 +9,7 @@ precond = rule {
 
 # Requests to come only from our private IP range
 cidrcheck = rule {
-    sockaddr.is_contained(request.connection.remote_addr, "122.22.3.4/32")
+    sockaddr.is_contained("122.22.3.4/32",request.connection.remote_addr)
 }
 
 # Check the precondition before execute the cidrcheck
